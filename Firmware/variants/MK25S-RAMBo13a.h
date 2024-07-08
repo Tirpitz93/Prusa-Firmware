@@ -14,10 +14,11 @@
 #define PRINTER_MMU_TYPE PRINTER_MK25S_MMU2
 #define PRINTER_MMU_NAME PRINTER_MK25S_MMU2_NAME
 #define FILAMENT_SIZE "1_75mm_MK25S"
-#define NOZZLE_TYPE "E3Dv6full"
+//#define NOZZLE_TYPE "E3Dv6full"
+#define NOZZLE_TYPE "E3DREVO"
 
 // Printer name
-#define CUSTOM_MENDEL_NAME "Prusa i3 MK2.5S"
+#define CUSTOM_MENDEL_NAME "Prusa i3 MK2.5S-R"
 
 // Electronics
 #define MOTHERBOARD BOARD_RAMBO_MINI_1_3
@@ -169,7 +170,7 @@
 #error "Check maximal allowed value @ ShortTimer (see HEATER_MINTEMP_DELAY definition)"
 #endif
 #define BED_MINTEMP 30
-#define BED_MINTEMP_DELAY 50000                   // [ms] ! if changed, check maximal allowed value @ ShortTimer
+#define BED_MINTEMP_DELAY 65535                   // [ms] ! if changed, check maximal allowed value @ ShortTimer
 #if BED_MINTEMP_DELAY>USHRT_MAX
 #error "Check maximal allowed value @ ShortTimer (see BED_MINTEMP_DELAY definition)"
 #endif
@@ -204,7 +205,8 @@
 #define EXTRUDE_MINTEMP 175
 
 // Quick nozzle change supported
-//#define QUICK_NOZZLE_CHANGE
+#define QUICK_NOZZLE_CHANGE
+
 
 // Extruder cooling fans
 #define EXTRUDER_0_AUTO_FAN_PIN   8
