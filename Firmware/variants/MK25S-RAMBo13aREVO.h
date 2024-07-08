@@ -14,17 +14,17 @@
 #define PRINTER_MMU_TYPE PRINTER_MK25S_MMU2
 #define PRINTER_MMU_NAME PRINTER_MK25S_MMU2_NAME
 #define FILAMENT_SIZE "1_75mm_MK25S"
-#define NOZZLE_TYPE "E3Dv6full"
+//#define NOZZLE_TYPE "E3Dv6full"
+#define NOZZLE_TYPE "E3DREVO"
 
 // Printer name
-#define CUSTOM_MENDEL_NAME "Prusa i3 MK2.5S"
+#define CUSTOM_MENDEL_NAME "Prusa i3 MK2.5S+R"
 
 // Electronics
 #define MOTHERBOARD BOARD_RAMBO_MINI_1_3
 
 #define HEATBED_V2
 #define STEEL_SHEET
-//#define NEW_FIRST_LAYER_CAL //from front to back
 #define TACH0PULLUP
 
 // Uncomment the below for the E3D PT100 temperature sensor (with or without PT100 Amplifier)
@@ -170,7 +170,7 @@
 #error "Check maximal allowed value @ ShortTimer (see HEATER_MINTEMP_DELAY definition)"
 #endif
 #define BED_MINTEMP 30
-#define BED_MINTEMP_DELAY 50000                   // [ms] ! if changed, check maximal allowed value @ ShortTimer
+#define BED_MINTEMP_DELAY 65535                   // [ms] ! if changed, check maximal allowed value @ ShortTimer
 #if BED_MINTEMP_DELAY>USHRT_MAX
 #error "Check maximal allowed value @ ShortTimer (see BED_MINTEMP_DELAY definition)"
 #endif
@@ -205,7 +205,8 @@
 #define EXTRUDE_MINTEMP 175
 
 // Quick nozzle change supported
-//#define QUICK_NOZZLE_CHANGE
+#define QUICK_NOZZLE_CHANGE
+
 
 // Extruder cooling fans
 #define EXTRUDER_0_AUTO_FAN_PIN   8
@@ -266,13 +267,7 @@
  HOST FEATURES
  *------------------------------------*/
 
-// Uncomment if the host supports '//action:shutdown'. It will add "Shutdown host" to the LCD meun. 
-//#define HOST_SHUTDOWN
-
-// Uncomment if the host doesn't support '//action:ready' & '//action:notready'.
-// This will replace the "Set Ready"/"Set not Ready" LCD menu entry with
-// "Print from host" and send '//action:start' instead.
-//#define REPLACE_SETREADY
+//#define HOST_SHUTDOWN              //Host supports "//action:shutdown" feature
 
 /*------------------------------------
  MOTOR CURRENT SETTINGS
@@ -333,9 +328,9 @@
 //
 //#define BED_LIMIT_SWITCHING
 
-// This sets the max power delivered to the bed.
+// This sets the max power delivered to the bed, and replaces the HEATER_BED_DUTY_CYCLE_DIVIDER option.
 // all forms of bed control obey this (PID, bang-bang, bang-bang with hysteresis)
-// setting this to anything other than 255 enables a form of PWM to the bed,
+// setting this to anything other than 255 enables a form of PWM to the bed just like HEATER_BED_DUTY_CYCLE_DIVIDER did,
 // so you shouldn't use it unless you are OK with PWM on your bed.  (see the comment on enabling PIDTEMPBED)
 #define MAX_BED_POWER 255 // limits duty cycle to bed; 255=full current
 
@@ -380,10 +375,10 @@
 #define PVB_PREHEAT_HPB_TEMP 75
 
 #define ASA_PREHEAT_HOTEND_TEMP 260
-#define ASA_PREHEAT_HPB_TEMP 105
+#define ASA_PREHEAT_HPB_TEMP 100
 
-#define PC_PREHEAT_HOTEND_TEMP 275
-#define PC_PREHEAT_HPB_TEMP 105
+#define PC_PREHEAT_HOTEND_TEMP 290
+#define PC_PREHEAT_HPB_TEMP 100
 
 #define PA_PREHEAT_HOTEND_TEMP 275
 #define PA_PREHEAT_HPB_TEMP 90
@@ -397,8 +392,8 @@
 #define PP_PREHEAT_HOTEND_TEMP 254
 #define PP_PREHEAT_HPB_TEMP 100
 
-#define PET_PREHEAT_HOTEND_TEMP 230
-#define PET_PREHEAT_HPB_TEMP 85
+#define PET_PREHEAT_HOTEND_TEMP 240
+#define PET_PREHEAT_HPB_TEMP 95
 
 #define FLEX_PREHEAT_HOTEND_TEMP 240
 #define FLEX_PREHEAT_HPB_TEMP 50
@@ -528,15 +523,5 @@
        calculated segment length is used. */
 #define DEFAULT_MIN_ARC_SEGMENTS 20 // The enforced minimum segments in a full circle of the same radius.  Set to 0 to disable
 #define DEFAULT_ARC_SEGMENTS_PER_SEC 0 // Use feedrate to choose segment length. Set to 0 to disable
-
-/*------------------------------------
- COMMUNITY FEATURES
- *------------------------------------*/
-
-//Show filename instead of print time after SD card print finished
-//#define SHOW_FILENAME_AFTER_FINISH
-
-//Remove the "AutoLoad filament" LCD menu entry if autoload is enabled.
-//#define REMOVE_AUTOLOAD_FILAMENT_MENU_ENTRY
 
 #endif //__CONFIGURATION_PRUSA_H
