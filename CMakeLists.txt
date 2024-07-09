@@ -57,7 +57,7 @@ message(STATUS "Filename debug suffix ...........: ${FN_VERSION_DEBUG_SUFFIX}")
 # SET(FW_COMMIT_DSC "v3.13.0-1234")
 
 if(NOT "${PROJECT_VERSION_HASH}" STREQUAL "UNKNOWN" AND NOT "${FW_COMMIT_DSC}" MATCHES ".+NOTFOUND.+") # else -> no commit hash is known... likely no git.
-string(REGEX MATCH "[v|t]([0-9]+)\.([0-9]+)\.([0-9]+)-?(${DEV_TAG_REGEX})?([0-9]+)?-([0-9]+)" TAG_VERSION "${FW_COMMIT_DSC}")
+string(REGEX MATCH "[v|t]([0-9]+)\.([0-9]+)\.([0-9]+)-?(${DEV_TAG_REGEX})?([0-9]+)?-([0-9]+)(-(D)?(B)?)?" TAG_VERSION "${FW_COMMIT_DSC}")
 
 if (CMAKE_MATCH_4) # Do we have a build type?
     decode_flavor_code(PROJECT_VER_TAG_FLV "${CMAKE_MATCH_4}" "${CMAKE_MATCH_5}")
@@ -109,10 +109,16 @@ if(CMAKE_MATCH_1 AND CMAKE_MATCH_2)
   set(FN_VERSION_SUFFIX "FW_${CMAKE_MATCH_1}.${CMAKE_MATCH_2}.${CMAKE_MATCH_3}")
 endif()
 if(CMAKE_MATCH_4 AND CMAKE_MATCH_5)
-  set (FN_VERSION_SUFFIX "${FN_VERSION_SUFFIX}-${CMAKE_MATCH_4}${CMAKE_MATCH_5}")
+  set (FN_VERSION_SUFFIX "${FN_VERSION_SUFFIX}-${CMAKE_MATCH_4}${CMAKE_MATCH_5}-${PROJECT_VERSION_HASH}")
 endif()
+
+if(CMAKE_MATCH_8 AND CMAKE_MATCH_4 AND CMAKE_MATCH_5)
+  set(FN_VERSION_SUFFIX "${FN_VERSION_SUFFIX}-dirty")
+elseif (CMAKE_MATCH_9 AND CMAKE_MATCH_4 AND CMAKE_MATCH_5)
+  set(FN_VERSION_SUFFIX "${FN_VERSION_SUFFIX}-broken")
+endif ()
 if(CMAKE_MATCH_6 AND PROJECT_VERSION_HASH)
-  set(FN_VERSION_DEBUG_SUFFIX "${FN_VERSION_SUFFIX}+${CMAKE_MATCH_6}_${PROJECT_VERSION_HASH}")
+  set(FN_VERSION_DEBUG_SUFFIX "${FN_VERSION_SUFFIX}+${CMAKE_MATCH_6}")
 endif()
 # Inform user about the resolved settings from github
 message(STATUS "Project version git..............: ${PROJECT_VERSION}")
@@ -124,6 +130,8 @@ message(STATUS "Project version git description..: ${PROJECT_VERSION_FULL}")
 #message(STATUS "Project version git flavor.......: ${CMAKE_MATCH_4}") #For debuging
 #message(STATUS "Project version git fla-revison..: ${CMAKE_MATCH_5}") #For debuging
 #message(STATUS "Project version git commit number: ${CMAKE_MATCH_6}") #For debuging
+#message(STATUS "Project version git local status.: ${CMAKE_MATCH_8}") #For debuging
+#message(STATUS "Project version FW_COMMIT_DSC....: ${FW_COMMIT_DSC}") #For debuging
 message(STATUS "Filename suffix .................: ${FN_VERSION_SUFFIX}")
 message(STATUS "Filename debug suffix ...........: ${FN_VERSION_DEBUG_SUFFIX}")
 
