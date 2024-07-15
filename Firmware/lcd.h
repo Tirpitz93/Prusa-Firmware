@@ -114,7 +114,6 @@ extern bool lcd_longpress_trigger;
 extern lcd_lcdupdate_func_t lcd_lcdupdate_func;
 
 
-
 extern uint8_t lcd_clicked(void);
 
 extern void lcd_beeper_quick_feedback(void);

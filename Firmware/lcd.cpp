@@ -15,7 +15,9 @@
 #include "fastio.h"
 #include "sound.h"
 #include "backlight.h"
-
+#if defined(HOST_INTERACTION) && defined(BUFFERED_LCD)
+#include "host_interaction.h"
+#endif
 #define LCD_DEFAULT_DELAY 100
 
 #if (defined(LCD_PINS_D0) && defined(LCD_PINS_D1) && defined(LCD_PINS_D2) && defined(LCD_PINS_D3))
@@ -176,7 +178,10 @@ static void lcd_write(uint8_t value)
 	else {
 		lcd_send(value, HIGH);
 		lcd_ddram_address++; // no need for preventing ddram overflow
-	}
+#if defined(HOST_INTERACTION) && defined(BUFFERED_LCD)
+        write_char_to_buffer(value, lcd_ddram_address);
+#endif
+    }
 }
 
 static void lcd_begin(uint8_t clear)
@@ -708,7 +713,7 @@ void lcd_printNumber(unsigned long n, uint8_t base)
 
 uint8_t lcd_draw_update = 2;
 int16_t lcd_encoder = 0;
-static int8_t lcd_encoder_diff = 0;
+int8_t lcd_encoder_diff = 0;
 
 uint8_t lcd_click_trigger = 0;
 uint8_t lcd_update_enabled = 1;

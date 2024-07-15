@@ -125,6 +125,10 @@
 
 #include "mmu2.h"
 
+#if defined(HOST_INTERACTION) || defined(BUFFERED_LCD)
+#include "host_interaction.h"
+#endif
+
 #define VERSION_STRING  "1.0.2"
 
 #include "sound.h"
@@ -5499,9 +5503,66 @@ void process_commands()
 
 #endif //SDSUPPORT
 
-    /*!
-    ### M31 - Report current print time <a href="https://reprap.org/wiki/G-code#M31:_Output_time_since_last_M109_or_SD_card_start_to_serial">M31: Output time since last M109 or SD card start to serial</a>
-    */
+#if defined(BUFFERED_LCD)
+
+
+        case 940: // M940: Echo LCD buffer to serial
+            echo_current_display();
+            break;
+#endif
+#if defined(HOST_INTERACTION)
+        case 941: // M941: Send Input Event
+            if (code_seen('W')) // Encoder change, signed integer
+            {
+                //increment or decrement the encoder input
+
+                change_encoder(1, ENCODER_PULSES_PER_STEP);
+            }
+            if (code_seen('S')) // Encoder change, signed integer
+            {
+                //increment or decrement the encoder input
+
+                change_encoder(-1, ENCODER_PULSES_PER_STEP);
+            }
+            if (code_seen('B')) // Button press
+            {
+                //trigger button press
+                press_button();
+            }
+            if (code_seen('N')) // Button long press
+            {
+                //trigger long button press
+                long_press_button();
+            }
+            if (code_seen('U')) // Up button
+                {
+                    //trigger up button press
+                    change_encoder(-1, ENCODER_PULSES_PER_STEP);
+                }
+            if (code_seen('D')) // Down button
+                {
+                    //trigger down button press
+                    change_encoder(1, ENCODER_PULSES_PER_STEP);
+                }
+            if (code_seen('L')) // Left button
+                {
+
+//                    press_button();
+
+                }
+            if (code_seen('R')) // Right button
+                {
+                press_button();
+                }
+
+
+
+            break;
+#endif //BUFFERED_LCD
+
+            /*!
+            ### M31 - Report current print time <a href="https://reprap.org/wiki/G-code#M31:_Output_time_since_last_M109_or_SD_card_start_to_serial">M31: Output time since last M109 or SD card start to serial</a>
+            */
     case 31: //M31 take time since the start of the SD print or an M109 command
       {
       char time[30];
@@ -9412,6 +9473,7 @@ Sigma_Exit:
 	case 9125:
 		dcode_9125(); break;
 #endif //defined(FILAMENT_SENSOR) && (FILAMENT_SENSOR_TYPE == FSENSOR_PAT9125)
+
 
 #endif //DEBUG_DCODES
 
