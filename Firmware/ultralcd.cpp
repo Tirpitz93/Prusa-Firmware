@@ -80,7 +80,6 @@ static LongTimer lcd_status_message_timeout;
 static uint8_t lcd_status_message_level;
 static uint8_t lcd_status_message_idx = 0;
 static char lcd_status_message[LCD_WIDTH + 1];
-
 /* !Configuration settings */
 
 static uint8_t lay1cal_filament = 0;
@@ -187,6 +186,7 @@ static uint8_t  lcd_selftest_screen(TestScreen screen, uint8_t _progress, uint8_
 static void lcd_selftest_screen_step(const uint8_t _row, const uint8_t _col, const uint8_t _state, const char *_name, const char _indicator);
 static bool lcd_selftest_manual_fan_check(const uint8_t _fan, const bool check_opposite,
 	const bool _default=false);
+static void menuitems_temperature_common();
 
 #ifdef FANCHECK
 /** Enumerate for lcd_selftest_fan_auto function.
