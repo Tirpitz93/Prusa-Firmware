@@ -15,7 +15,8 @@
 #define PRINTER_MMU_NAME PRINTER_MK25S_MMU2_NAME
 #define FILAMENT_SIZE "1_75mm_MK25S"
 #define NOZZLE_TYPE "E3Dv6full"
-
+#define BUFFERED_LCD
+#define HOST_INTERACTION
 // Printer name
 #define CUSTOM_MENDEL_NAME "Prusa i3 MK2.5S"
 
