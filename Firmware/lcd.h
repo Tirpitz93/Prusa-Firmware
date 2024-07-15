@@ -113,7 +113,7 @@ extern bool lcd_longpress_trigger;
 
 extern lcd_lcdupdate_func_t lcd_lcdupdate_func;
 
-
+extern char lcd_buffer[];
 
 extern uint8_t lcd_clicked(void);
 

@@ -175,6 +175,7 @@ static void lcd_write(uint8_t value)
 	#endif
 	else {
 		lcd_send(value, HIGH);
+        lcd_buffer[lcd_ddram_address] = value;
 		lcd_ddram_address++; // no need for preventing ddram overflow
 	}
 }

@@ -256,6 +256,7 @@
  ADDITIONAL FEATURES SETTINGS
  *------------------------------------*/
 
+#define BUFFERED_LCD
 // temperature runaway
 #define TEMP_RUNAWAY_BED_HYSTERESIS 5
 #define TEMP_RUNAWAY_BED_TIMEOUT 360
