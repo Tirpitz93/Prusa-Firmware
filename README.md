@@ -8,6 +8,8 @@ The firmware for the Original Prusa i3 printers is proudly based on [Marlin 1.0.
 
 This repository contains _development material only!_
 
+_This fork contains tweaks to run the MK2.5S with the MMU2S or MMU3 on the latest version.
+It also contains the quick nozzle change feature, which allows you to change the nozzle diameter setting from the main menu for use with the REVO nozzle system._
 
 # Build
 ## Linux
