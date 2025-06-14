@@ -61,38 +61,34 @@ void menu_goto(menu_func_t menu, const int16_t encoder, bool reset_menu_state, c
 	else
 		CRITICAL_SECTION_END;
 }
-
 void menu_start(void)
 {
     if (lcd_encoder < 0)
     {
-        lcd_encoder = 0;
-		Sound_MakeSound(e_SOUND_TYPE_BlindAlert);
+        lcd_encoder = menu_item - 1; // Wrap around to the last item
+        Sound_MakeSound(e_SOUND_TYPE_BlindAlert);
+        lcd_draw_update = 2; // Force full redraw
     }
     if (lcd_encoder < menu_top)
-		menu_top = lcd_encoder;
+        menu_top = lcd_encoder;
     menu_line = menu_top;
     menu_clicked = lcd_clicked(); // Consume click event
 }
 
 void menu_end(void)
 {
-	if (menu_row >= LCD_HEIGHT)
-	{
-		// Early abort if the menu was clicked. The current menu might have changed because of the click event
-		return;
-	}
-	if (lcd_encoder >= menu_item)
-	{
-		lcd_encoder = menu_item - 1;
-		Sound_MakeSound(e_SOUND_TYPE_BlindAlert);
-	}
-	if (((uint8_t)lcd_encoder) >= menu_top + LCD_HEIGHT)
-	{
-		menu_top = lcd_encoder - LCD_HEIGHT + 1;
-		menu_line = menu_top - 1;
-		menu_row = -1;
-	}
+    if (lcd_encoder >= menu_item)
+    {
+        lcd_encoder = 0; // Wrap around to the first item
+        Sound_MakeSound(e_SOUND_TYPE_BlindAlert);
+        lcd_draw_update = 2; // Force full redraw
+    }
+    if (((uint8_t)lcd_encoder) >= menu_top + LCD_HEIGHT)
+    {
+        menu_top = lcd_encoder - LCD_HEIGHT + 1;
+        menu_line = menu_top - 1;
+        menu_row = -1;
+    }
 }
 
 void menu_back(uint8_t nLevel)
