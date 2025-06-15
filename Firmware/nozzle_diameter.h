@@ -2,7 +2,7 @@
 #define NOZZLE_DIAMETER_H
 #include <eeprom.h>
 
-enum class ClNozzleDiameter : uint_least8_t {
+enum class ClNozzleDiameter : uint16_t {
     _Diameter_150 = 15,
     _Diameter_250 = 25,
     _Diameter_400 = 40,
@@ -14,9 +14,8 @@ enum class ClNozzleDiameter : uint_least8_t {
     _Diameter_Undef = EEPROM_EMPTY_VALUE
 };
 
-struct ClNozzleDiameterInfo {
+struct __attribute__((packed)) ClNozzleDiameterInfo {
     ClNozzleDiameter diameter;
-    uint16_t diameter_uM;
     const char *label;
 };
 

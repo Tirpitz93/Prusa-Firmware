@@ -15,16 +15,16 @@ constexpr char PROGMEM nd_140[] = "1.40";
 
 const ClNozzleDiameterInfo nozzle_diameter_info[] = {
 #ifdef NOZZLE_DIAMETER_EXTENDED
-    {ClNozzleDiameter::_Diameter_150, 150, nd_015},
+    {ClNozzleDiameter::_Diameter_150,  nd_015},
 #endif
-    {ClNozzleDiameter::_Diameter_250, 250, nd_025},
-    {ClNozzleDiameter::_Diameter_400, 400, nd_040},
-    {ClNozzleDiameter::_Diameter_600, 600, nd_060},
-    {ClNozzleDiameter::_Diameter_800, 800, nd_080},
+    {ClNozzleDiameter::_Diameter_250,  nd_025},
+    {ClNozzleDiameter::_Diameter_400,  nd_040},
+    {ClNozzleDiameter::_Diameter_600,  nd_060},
+    {ClNozzleDiameter::_Diameter_800,  nd_080},
 #ifdef NOZZLE_DIAMETER_EXTENDED
-    {ClNozzleDiameter::_Diameter_1000, 1000, nd_100},
-    {ClNozzleDiameter::_Diameter_1200, 1200, nd_120},
-    {ClNozzleDiameter::_Diameter_1400, 1400, nd_140},
+    {ClNozzleDiameter::_Diameter_1000,  nd_100},
+    {ClNozzleDiameter::_Diameter_1200,  nd_120},
+    {ClNozzleDiameter::_Diameter_1400,  nd_140},
 #endif
 };
 const size_t nozzle_diameter_info_count = sizeof(nozzle_diameter_info) / sizeof(nozzle_diameter_info[0]);
@@ -47,8 +47,8 @@ void lcd_nozzle_diameter_cycle(void) {
     // Move to next, wrap around
     idx = (idx + 1) % nozzle_diameter_info_count;
     oNozzleDiameter = nozzle_diameter_info[idx].diameter;
-    uint16_t nDiameter = nozzle_diameter_info[idx].diameter_uM;
+    // uint16_t nDiameter = nozzle_diameter_info[idx].diameter_uM;
 
     eeprom_update_byte_notify((uint8_t *) EEPROM_NOZZLE_DIAMETER, (uint8_t) oNozzleDiameter);
-    eeprom_update_word_notify((uint16_t *) EEPROM_NOZZLE_DIAMETER_uM, nDiameter);
+    eeprom_update_word_notify((uint16_t *) EEPROM_NOZZLE_DIAMETER_uM, (uint16_t) oNozzleDiameter*10);
 }
