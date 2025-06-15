@@ -282,6 +282,7 @@ set(FW_SOURCES
     xflash.c
     xflash_dump.cpp
     xyzcal.cpp
+        nozzle_diameter.cpp
     )
 list(TRANSFORM FW_SOURCES PREPEND ${CMAKE_CURRENT_SOURCE_DIR}/Firmware/)
 

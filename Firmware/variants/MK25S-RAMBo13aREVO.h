@@ -542,5 +542,5 @@
 
 //Remove the "AutoLoad filament" LCD menu entry if autoload is enabled.
 //#define REMOVE_AUTOLOAD_FILAMENT_MENU_ENTRY
-
+#define NOZZLE_DIAMETER_EXTENDED
 #endif //__CONFIGURATION_PRUSA_H
