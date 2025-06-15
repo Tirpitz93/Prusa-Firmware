@@ -2053,6 +2053,13 @@ static void mFilamentItem_PET()
     bFilamentPreheatState = false;
     mFilamentItem(PET_PREHEAT_HOTEND_TEMP, PET_PREHEAT_HPB_TEMP);
 }
+#if defined(PET_PREHEAT_HOTEND_TEMP2) && defined(PET_PREHEAT_HPB_TEMP2)
+static void mFilamentItem_PET2()
+{
+    bFilamentPreheatState = false;
+    mFilamentItem(PET_PREHEAT_HOTEND_TEMP2, PET_PREHEAT_HPB_TEMP2);
+}
+#endif //PET_PREHEAT_HOTEND_TEMP2 && PET_PREHEAT_HPB_TEMP2
 
 static void mFilamentItem_ASA()
 {
@@ -2122,13 +2129,20 @@ void lcd_generic_preheat_menu()
         bool bPreheatOnlyNozzle = shouldPreheatOnlyNozzle();
         MENU_ITEM_SUBMENU_P(bPreheatOnlyNozzle ? PSTR("PLA  -  " STRINGIFY(PLA_PREHEAT_HOTEND_TEMP)) : PSTR("PLA  -  " STRINGIFY(PLA_PREHEAT_HOTEND_TEMP)  "/" STRINGIFY(PLA_PREHEAT_HPB_TEMP)) , mFilamentItem_PLA);
         MENU_ITEM_SUBMENU_P(bPreheatOnlyNozzle ? PSTR("PET  -  " STRINGIFY(PET_PREHEAT_HOTEND_TEMP)) : PSTR("PET  -  " STRINGIFY(PET_PREHEAT_HOTEND_TEMP)  "/" STRINGIFY(PET_PREHEAT_HPB_TEMP)) , mFilamentItem_PET);
+#if defined(PET_PREHEAT_HOTEND_TEMP2) && defined(PET_PREHEAT_HPB_TEMP2)
+        MENU_ITEM_SUBMENU_P(bPreheatOnlyNozzle ? PSTR("PET  -  " STRINGIFY(PET_PREHEAT_HOTEND_TEMP2)) : PSTR("PET  -  " STRINGIFY(PET_PREHEAT_HOTEND_TEMP2)  "/" STRINGIFY(PET_PREHEAT_HPB_TEMP2)) , mFilamentItem_PET2);
+#endif //PET_PREHEAT_HOTEND_TEMP2 && PET_PREHEAT_HPB_TEMP2
         MENU_ITEM_SUBMENU_P(bPreheatOnlyNozzle ? PSTR("ASA  -  " STRINGIFY(ASA_PREHEAT_HOTEND_TEMP)) : PSTR("ASA  -  " STRINGIFY(ASA_PREHEAT_HOTEND_TEMP)  "/" STRINGIFY(ASA_PREHEAT_HPB_TEMP)) , mFilamentItem_ASA);
         MENU_ITEM_SUBMENU_P(bPreheatOnlyNozzle ? PSTR("PC   -  " STRINGIFY(PC_PREHEAT_HOTEND_TEMP))  : PSTR("PC   -  " STRINGIFY(PC_PREHEAT_HOTEND_TEMP)   "/" STRINGIFY(PC_PREHEAT_HPB_TEMP))  , mFilamentItem_PC);
-        MENU_ITEM_SUBMENU_P(bPreheatOnlyNozzle ? PSTR("PVB  -  " STRINGIFY(PVB_PREHEAT_HOTEND_TEMP)) : PSTR("PVB  -  " STRINGIFY(PVB_PREHEAT_HOTEND_TEMP)  "/" STRINGIFY(PVB_PREHEAT_HPB_TEMP)) , mFilamentItem_PVB);
+#if ! (defined(PET_PREHEAT_HOTEND_TEMP2) && defined(PET_PREHEAT_HPB_TEMP2))
+       MENU_ITEM_SUBMENU_P(bPreheatOnlyNozzle ? PSTR("PVB  -  " STRINGIFY(PVB_PREHEAT_HOTEND_TEMP)) : PSTR("PVB  -  " STRINGIFY(PVB_PREHEAT_HOTEND_TEMP)  "/" STRINGIFY(PVB_PREHEAT_HPB_TEMP)) , mFilamentItem_PVB);
+#endif
         MENU_ITEM_SUBMENU_P(bPreheatOnlyNozzle ? PSTR("PA   -  " STRINGIFY(PA_PREHEAT_HOTEND_TEMP))  : PSTR("PA   -  " STRINGIFY(PA_PREHEAT_HOTEND_TEMP)   "/" STRINGIFY(PA_PREHEAT_HPB_TEMP))  , mFilamentItem_PA);
+#if ! (defined(PET_PREHEAT_HOTEND_TEMP2) && defined(PET_PREHEAT_HPB_TEMP2))
         MENU_ITEM_SUBMENU_P(bPreheatOnlyNozzle ? PSTR("ABS  -  " STRINGIFY(ABS_PREHEAT_HOTEND_TEMP)) : PSTR("ABS  -  " STRINGIFY(ABS_PREHEAT_HOTEND_TEMP)  "/" STRINGIFY(ABS_PREHEAT_HPB_TEMP)) , mFilamentItem_ABS);
         MENU_ITEM_SUBMENU_P(bPreheatOnlyNozzle ? PSTR("HIPS -  " STRINGIFY(HIPS_PREHEAT_HOTEND_TEMP)): PSTR("HIPS -  " STRINGIFY(HIPS_PREHEAT_HOTEND_TEMP) "/" STRINGIFY(HIPS_PREHEAT_HPB_TEMP)), mFilamentItem_HIPS);
         MENU_ITEM_SUBMENU_P(bPreheatOnlyNozzle ? PSTR("PP   -  " STRINGIFY(PP_PREHEAT_HOTEND_TEMP))  : PSTR("PP   -  " STRINGIFY(PP_PREHEAT_HOTEND_TEMP)   "/" STRINGIFY(PP_PREHEAT_HPB_TEMP))  , mFilamentItem_PP);
+#endif
         MENU_ITEM_SUBMENU_P(bPreheatOnlyNozzle ? PSTR("FLEX -  " STRINGIFY(FLEX_PREHEAT_HOTEND_TEMP)): PSTR("FLEX -  " STRINGIFY(FLEX_PREHEAT_HOTEND_TEMP) "/" STRINGIFY(FLEX_PREHEAT_HPB_TEMP)), mFilamentItem_FLEX);
     }
     if (!eeprom_read_byte((uint8_t*)EEPROM_WIZARD_ACTIVE) && eFilamentAction == FilamentAction::Preheat) MENU_ITEM_FUNCTION_P(_T(MSG_COOLDOWN), lcd_cooldown);
@@ -4249,47 +4263,8 @@ do\
     }\
 }\
 while (0)
+#include "nozzle_diameter.h"
 
-static void lcd_nozzle_diameter_cycle(void) {
-    uint16_t nDiameter;
-    switch(oNozzleDiameter){
-    case ClNozzleDiameter::_Diameter_250:
-        oNozzleDiameter=ClNozzleDiameter::_Diameter_400;
-        nDiameter=400;
-        break;
-    case ClNozzleDiameter::_Diameter_400:
-        oNozzleDiameter=ClNozzleDiameter::_Diameter_600;
-        nDiameter=600;
-        break;
-    case ClNozzleDiameter::_Diameter_600:
-        oNozzleDiameter=ClNozzleDiameter::_Diameter_800;
-        nDiameter=800;
-        break;
-    case ClNozzleDiameter::_Diameter_800:
-        oNozzleDiameter=ClNozzleDiameter::_Diameter_250;
-        nDiameter=250;
-        break;
-    default:
-        oNozzleDiameter=ClNozzleDiameter::_Diameter_400;
-        nDiameter=400;
-    }
-    eeprom_update_byte_notify((uint8_t*)EEPROM_NOZZLE_DIAMETER,(uint8_t)oNozzleDiameter);
-    eeprom_update_word_notify((uint16_t*)EEPROM_NOZZLE_DIAMETER_uM,nDiameter);
-}
-
-#define SETTINGS_NOZZLE \
-do\
-{\
-    switch(oNozzleDiameter)\
-    {\
-        case ClNozzleDiameter::_Diameter_250: MENU_ITEM_TOGGLE_P(_T(MSG_NOZZLE_DIAMETER), PSTR("0.25"), lcd_nozzle_diameter_cycle); break;\
-        case ClNozzleDiameter::_Diameter_Undef: \
-        case ClNozzleDiameter::_Diameter_400: MENU_ITEM_TOGGLE_P(_T(MSG_NOZZLE_DIAMETER), PSTR("0.40"), lcd_nozzle_diameter_cycle); break;\
-        case ClNozzleDiameter::_Diameter_600: MENU_ITEM_TOGGLE_P(_T(MSG_NOZZLE_DIAMETER), PSTR("0.60"), lcd_nozzle_diameter_cycle); break;\
-        case ClNozzleDiameter::_Diameter_800: MENU_ITEM_TOGGLE_P(_T(MSG_NOZZLE_DIAMETER), PSTR("0.80"), lcd_nozzle_diameter_cycle); break;\
-    }\
-}\
-while (0)
 
 static void lcd_check_update_RAM(ClCheckMode * oCheckSetting) {
     switch(*oCheckSetting) {
